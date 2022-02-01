@@ -1,0 +1,24 @@
+{
+  "name": "hello-node",
+  "version": "1.0.0",
+  "description": "node js hello world http",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdgeForge/hello-node.git"
+  },
+  "keywords": [
+    "nodejs",
+    "http"
+  ],
+  "author": "vinnie@edgeforge.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EdgeForge/hello-node/issues"
+  },
+  "homepage": "https://github.com/EdgeForge/hello-node#readme"
+}

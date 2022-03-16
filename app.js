@@ -1,4 +1,4 @@
-const http = require('http');
+const http = require('unit-http');
 var giphy = require('giphy-api')();
 
 async function getDog() {

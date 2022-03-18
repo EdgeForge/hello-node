@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/EdgeForge/hello-node#readme",
   "dependencies": {
-    "giphy-api": "^2.0.2"
+    "giphy-api": "^2.0.2",
+    "url": "^0.11.0"
   }
 }

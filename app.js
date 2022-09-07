@@ -1,5 +1,6 @@
 const http = require('http');
-var giphy = require('giphy-api')();
+let GIPHY_KEY = process.env.GIPHY_API_KEY
+var giphy = require('giphy-api')(GIPHY_KEY);
 
 async function getDog() {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,6 @@ http.createServer(async(req, response) => {
   // response.end('Hello from Nodejs, where james buys dog tv', dog);
   // console.log(dog.data[0].embed_url)
   console.log(dog.data[whichDog].images.original.url) 
-  response.end('<html><p>Hello from Nodejs, where james buys dog tv</p><img src="' + dog.data[whichDog].images.original.url + '" alt="dogtv" width="500" height="600"></html>');
+  response.end('<html><p>Hello from Nodejs and dogtv, now with more dogs</p><img src="' + dog.data[whichDog].images.original.url + '" alt="dogtv" width="500" height="600"></html>');
   // response.end('<img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg">');
 }).listen(3000);

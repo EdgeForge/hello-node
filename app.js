@@ -1,12 +1,20 @@
-const http = require('http');
-let GIPHY_KEY = process.env.GIPHY_API_KEY
-var giphy = require('giphy-api')(GIPHY_KEY);
+const GIPHY_API_KEY = process.env.GIPHY_API_KEY
+const PORT = Number(process.env.PORT) || 3000
+const QUERY = process.env.QUERY || 'dog'
 
-async function getDog() {
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+const url = require('url');
+const giphy = require('giphy-api')(GIPHY_API_KEY);
+
+const FAVICON = path.join(__dirname, 'favicon.png');
+
+async function getGifs() {
   return new Promise((resolve, reject) => {
     try {
       giphy.search({
-        q: 'dog',
+        q: QUERY,
         rating: 'g',
         limit: 50
       }, function(err, res) {
@@ -19,17 +27,33 @@ async function getDog() {
   })
 }
 
-http.createServer(async(req, response) => {
-  console.log(req.url)
-  let dog = await getDog()
-  let whichDog = Math.floor(Math.random() * 50)
-  response.statusCode = 200;
-  // res.setHeader('Content-Type', 'text/plain');
-  // response.setHeader('Content-Type', 'image/gif');
-  response.setHeader('Content-Type', 'text/html');
-  // response.end('Hello from Nodejs, where james buys dog tv', dog);
-  // console.log(dog.data[0].embed_url)
-  console.log(dog.data[whichDog].images.original.url) 
-  response.end('<html><p>Hello from Nodejs and dogtv, now with more dogs</p><img src="' + dog.data[whichDog].images.original.url + '" alt="dogtv" width="500" height="600"></html>');
-  // response.end('<img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg">');
-}).listen(3000);
+http.createServer(async(req, res) => {
+  const pathname = url.parse(req.url).pathname;
+  if (req.method === 'GET' && pathname === '/favicon.ico') {
+    // MIME type of your favicon.
+    //
+    // .ico = 'image/x-icon' or 'image/vnd.microsoft.icon'
+    // .png = 'image/png'
+    // .jpg = 'image/jpeg'
+    // .jpeg = 'image/jpeg'
+    res.setHeader('Content-Type', 'image/png');
+    fs.createReadStream(FAVICON).pipe(res);
+    return;
+  }
+  const gifs = await getGifs()
+  const selected = Math.floor(Math.random() * 50)
+  const selectedGif = gifs.data[selected]
+  const image = selectedGif.images.original
+  const {width, height} = scale(image.width, image.height, 500)
+  const alt = selectedGif.alt_text || selectedGif.title || QUERY
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.end(`<html><p>Hello from Nodejs and ${QUERY}tv, now with more ${QUERY}s</p><img src="${image.url}" alt="${alt}" width="${width}" height="${height}"></html>`);
+  console.log(`${req.url} ${res.statusCode} - ${image.url}`)
+}).listen(PORT);
+
+function scale(width, height, toWidth) {
+  const ratio = toWidth / width
+  const toHeight = height * ratio
+  return { width: toWidth, height: toHeight }
+}

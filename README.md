@@ -1,19 +1,12 @@
-# hello-node-dogtv
-node hello dogtv
+# pet tv
 
+## set your channels
 
-thanks https://nodejs.org/en/docs/guides/getting-started-guide/
+CHANNELS=https://dogtv.precisely-precise-swan-leik.on.edgeforge.run,https://cattv.precisely-precise-swan-leik.on.edgeforge.run
 
-thanks https://developers.giphy.com/docs/api#quick-start-guide
-
-## needs an api key to run
-```
-https://developers.giphy.com/dashboard/
-create app type is api
-export GIPHY_API_KEY='mykey'
-```
-# start
-```
-npm install
+## start the app
+```bash
+CHANNELS=https://dogtv.precisely-precise-swan-leik.on.edgeforge.run,https://cattv.precisely-precise-swan-leik.on.edgeforge.run \
 npm run start
 ```
+
